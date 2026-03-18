@@ -7,12 +7,17 @@ use App\Models\User;
 
 class BookPolicy
 {
+    public function isAdmin(User $user): bool
+    {
+        return in_array($user->email, config('admin.emails', []));
+    }
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -20,7 +25,7 @@ class BookPolicy
      */
     public function view(User $user, Book $book): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +33,7 @@ class BookPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $this->isAdmin($user);
     }
 
     /**
@@ -36,7 +41,7 @@ class BookPolicy
      */
     public function update(User $user, Book $book): bool
     {
-        return false;
+        return $this->isAdmin($user);
     }
 
     /**
@@ -44,22 +49,6 @@ class BookPolicy
      */
     public function delete(User $user, Book $book): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Book $book): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Book $book): bool
-    {
-        return false;
+        return $this->isAdmin($user);
     }
 }
