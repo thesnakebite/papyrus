@@ -19,6 +19,7 @@ class BookUsersTable
                 TextColumn::make('user.name')
                     ->searchable(),
                 TextColumn::make('status')
+                    ->badge()
                     ->searchable(),
                 TextColumn::make('rating')
                     ->numeric()

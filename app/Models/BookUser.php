@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Books\BookStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,6 +12,17 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 #[Fillable(['book_id', 'user_id', 'status', 'rating', 'review', 'requested_at', 'borrowed_at', 'returned_at', 'return_requested_at'])]
 class BookUser extends Pivot
 {
+    protected function casts(): array
+    {
+        return [
+            'status' => BookStatus::class,
+            'requested_at' => 'datetime',
+            'borrowed_at' => 'datetime',
+            'returned_at' => 'datetime',
+            'return_requested_at' => 'datetime',
+        ];
+    }
+
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);

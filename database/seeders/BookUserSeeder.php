@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Books\BookStatus;
 use App\Models\Book;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -18,14 +19,14 @@ class BookUserSeeder extends Seeder
 
             foreach ($bookIds as $bookId) {
                 // code...
-                $status = collect(['requested', 'borrowed', 'returned'])->random();
+                $status = collect(BookStatus::cases())->random();
                 $requestedAt = now()->subDays(rand(5, 30));
-                $borrowedAt = in_array($status, ['borrowed', 'returned']) ? $requestedAt->copy()->addDays(rand(1, 5)) : null;
-                $returnedAt = $status === 'returned' ? $borrowedAt->copy()->addDays(rand(2, 10)) : null;
-                $rating = $status === 'returned' ? rand(3, 5) : null;
+                $borrowedAt = in_array($status, [BookStatus::Borrowed, BookStatus::Returned]) ? $requestedAt->copy()->addDays(rand(1, 5)) : null;
+                $returnedAt = $status === BookStatus::Returned ? $borrowedAt->copy()->addDays(rand(2, 10)) : null;
+                $rating = $status === BookStatus::Returned ? rand(3, 5) : null;
 
                 $user->books()->attach($bookId, [
-                    'status' => $status,
+                    'status' => $status->value,
                     'requested_at' => $requestedAt,
                     'borrowed_at' => $borrowedAt,
                     'returned_at' => $returnedAt,
