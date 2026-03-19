@@ -28,7 +28,7 @@ class BooksTable
                     //         ->searchable(),
                     // ])->space(1),
                     View::make('filament.app.resources.books.book-info'),
-                ])
+                ]),
             ])->contentGrid([
                 'default' => 1,
                 'md' => 2,
