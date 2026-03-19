@@ -16,6 +16,7 @@ abstract class BasePanelProvider extends PanelProvider
             ->brandLogoHeight('2.4rem')
             ->favicon('/images/favicon.ico')
             ->font('Source Sans 3')
-            ->profile();
+            ->profile()
+            ->viteTheme('resources/css/filament/theme.css');
     }
 }
