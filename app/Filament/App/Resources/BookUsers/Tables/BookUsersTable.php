@@ -2,9 +2,11 @@
 
 namespace App\Filament\App\Resources\BookUsers\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
+use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\TextSize;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -14,47 +16,26 @@ class BookUsersTable
     {
         return $table
             ->columns([
-                TextColumn::make('book.title')
-                    ->searchable(),
-                TextColumn::make('user.name')
-                    ->searchable(),
-                TextColumn::make('status')
-                    ->badge()
-                    ->searchable(),
-                TextColumn::make('rating')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('requested_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('borrowed_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('returned_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('return_requested_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
-            ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                Split::make([
+                    ImageColumn::make('book.image')
+                        ->imageWidth(80)
+                        ->imageHeight('auto')
+                        ->grow(false),
+
+                    Stack::make([
+                        TextColumn::make('book.title')
+                            ->size(TextSize::Large)
+                            ->weight(FontWeight::SemiBold)
+                            ->searchable(),
+
+                        TextColumn::make('book.author')
+                            ->color('primary')
+                            ->searchable(),
+                    ])->space(1),
                 ]),
+            ])->contentGrid([
+                'default' => 1,
+                'md' => 2,
             ]);
     }
 }
