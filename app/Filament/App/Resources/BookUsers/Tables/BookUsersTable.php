@@ -48,6 +48,7 @@ class BookUsersTable
                         default => 'No se encontraron libros',
                     };
                 }
-            )->emptyStateIcon('heroicon-o-book-open');
+            )->emptyStateIcon('heroicon-o-book-open')
+            ->searchPlaceholder('Búsqueda por título o autor');
     }
 }

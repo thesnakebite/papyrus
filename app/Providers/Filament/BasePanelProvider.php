@@ -17,6 +17,7 @@ abstract class BasePanelProvider extends PanelProvider
             ->favicon('/images/favicon.ico')
             ->font('Source Sans 3')
             ->profile()
-            ->viteTheme('resources/css/filament/theme.css');
+            ->viteTheme('resources/css/filament/theme.css')
+            ->globalSearch(false);
     }
 }

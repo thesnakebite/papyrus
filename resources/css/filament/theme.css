@@ -2,3 +2,7 @@
 
 @source '../../../app/Filament/**/*';
 @source '../../../resources/views/filament/**/*';
+
+.fi-input[type="search"] {
+    min-width: 12rem;
+}
