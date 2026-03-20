@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable(['title', 'author', 'image', 'description'])]
 class Book extends Model
@@ -12,5 +13,11 @@ class Book extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function currentBorrow(): HasOne
+    {
+        return $this->hasOne(BookUser::class)
+            ->where('user_id', auth()->id());
     }
 }

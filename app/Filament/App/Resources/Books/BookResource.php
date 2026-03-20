@@ -28,7 +28,8 @@ class BookResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->withAvg('users as average_rating', 'book_user.rating');
+            ->withAvg('users as average_rating', 'book_user.rating')
+            ->with('currentBorrow');
     }
 
     public static function form(Schema $schema): Schema

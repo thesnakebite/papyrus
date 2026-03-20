@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources\Books\Tables;
 
+use App\Enums\Books\BookStatus;
 use App\Filament\Tables\Columns\RatingColumn;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
@@ -33,6 +34,25 @@ class BooksTable
                                 ->searchable(),
                         ]),
                         RatingColumn::make('average_rating'),
+                        TextColumn::make('status')
+                            ->state(fn ($record) => $record?->currentBorrow?->status)
+                            ->formatStateUsing(
+                                function ($state) {
+                                    return match ($state) {
+                                        BookStatus::Requested => 'Solicitado',
+                                        BookStatus::Borrowed => 'Actualmente leyendo',
+                                        BookStatus::Returned => 'Leído',
+                                        default => null,
+                                    };
+                                }
+                            )
+                            ->badge()
+                            ->color(fn ($state) => match ($state) {
+                                BookStatus::Requested => 'warning',
+                                BookStatus::Borrowed => 'success',
+                                BookStatus::Returned => 'gray',
+                                default => null,
+                            }),
                     ])->space(3),
                 ]),
             ])->contentGrid([
