@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources\Books\Tables;
 
+use App\Filament\Tables\Columns\RatingColumn;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
 use Filament\Tables\Columns\ImageColumn;
@@ -22,14 +23,17 @@ class BooksTable
                         ->imageHeight('auto')
                         ->grow(false),
                     Stack::make([
-                        TextColumn::make('title')
-                            ->size(TextSize::Large)
-                            ->weight(FontWeight::SemiBold)
-                            ->searchable(),
-                        TextColumn::make('author')
-                            ->color('primary')
-                            ->searchable(),
-                    ])->space(1),
+                        Stack::make([
+                            TextColumn::make('title')
+                                ->size(TextSize::Large)
+                                ->weight(FontWeight::SemiBold)
+                                ->searchable(),
+                            TextColumn::make('author')
+                                ->color('primary')
+                                ->searchable(),
+                        ]),
+                        RatingColumn::make('average_rating'),
+                    ])->space(3),
                 ]),
             ])->contentGrid([
                 'default' => 1,
