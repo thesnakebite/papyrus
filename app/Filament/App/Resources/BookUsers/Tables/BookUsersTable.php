@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources\BookUsers\Tables;
 
+use App\Enums\Books\BookStatus;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
 use Filament\Tables\Columns\ImageColumn;
@@ -36,6 +37,17 @@ class BookUsersTable
             ])->contentGrid([
                 'default' => 1,
                 'md' => 2,
-            ]);
+            ])->emptyStateHeading(
+                function ($livewire) {
+
+                    return match ($livewire->activeTab) {
+                        BookStatus::Borrowed->value => 'Todavía no has tomado prestado ningún libro.',
+                        BookStatus::Requested->value => 'Aún no has solicitado ningún libro.',
+                        BookStatus::Returned->value => 'Todavía no has leído ningún libro.',
+
+                        default => 'No se encontraron libros',
+                    };
+                }
+            )->emptyStateIcon('heroicon-o-book-open');
     }
 }
