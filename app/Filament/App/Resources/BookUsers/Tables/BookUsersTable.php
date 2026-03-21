@@ -3,6 +3,7 @@
 namespace App\Filament\App\Resources\BookUsers\Tables;
 
 use App\Enums\Books\BookStatus;
+use Filament\Actions\DeleteAction;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
 use Filament\Tables\Columns\ImageColumn;
@@ -41,7 +42,20 @@ class BookUsersTable
             ])->contentGrid([
                 'default' => 1,
                 'md' => 2,
-            ])->emptyStateHeading(
+            ])
+            ->recordActions([
+                DeleteAction::make('delete')
+                    ->label('Solicitud de cancelación')
+                    ->button()
+                    ->outlined()
+                    ->size('xs')
+                    ->modalHeading('Cancelar solicitud de reserva')
+                    ->modalDescription('¿Está seguro de que desea cancelar su solicitud de este libro?')
+                    ->modalSubmitActionLabel('Si')
+                    ->modalCancelActionLabel('No')
+                    ->visible(fn ($record) => $record->status === BookStatus::Requested)
+            ])
+            ->emptyStateHeading(
                 function ($livewire) {
 
                     return match ($livewire->activeTab) {
