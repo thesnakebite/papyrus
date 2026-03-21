@@ -3,7 +3,11 @@
 namespace App\Filament\App\Resources\BookUsers\Tables;
 
 use App\Enums\Books\BookStatus;
+use App\Filament\Admin\Resources\Books\BookResource;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
 use Filament\Tables\Columns\ImageColumn;
@@ -29,9 +33,15 @@ class BookUsersTable
                             ->color('primary')
                             ->searchable(),
 
-                        TextColumn::make('created_at')
+                        TextColumn::make('updated_at')
                             ->since()
                             ->extraAttributes(['class' => 'text-xs text-gray-500']),
+
+                        TextColumn::make('status')
+                            ->state('Se solicita la devolución.')
+                            ->badge()
+                            ->icon('heroicon-o-clock')
+                            ->visible(fn ($record) => $record?->return_requested_at && $record->status === BookStatus::Borrowed),
                     ])->space(1),
 
                     ImageColumn::make('book.image')
@@ -53,7 +63,42 @@ class BookUsersTable
                     ->modalDescription('¿Está seguro de que desea cancelar su solicitud de este libro?')
                     ->modalSubmitActionLabel('Si')
                     ->modalCancelActionLabel('No')
-                    ->visible(fn ($record) => $record->status === BookStatus::Requested)
+                    ->visible(fn ($record) => $record->status === BookStatus::Requested),
+
+                Action::make('return_book')
+                    ->label('Return Book')
+                    ->button()
+                    ->outlined()
+                    ->size('xs')
+                    ->icon('heroicon-o-arrow-left-circle')
+                    ->visible(fn ($record) => $record->status === BookStatus::Borrowed && ! $record->return_requested_at)
+                    ->modalHeading('¿Te gustó el libro?')
+                    ->modalDescription('Sus comentarios nos ayudan a mejorar nuestras recomendaciones.')
+                    ->schema([
+                        Select::make('rating')
+                            ->label('Califica el libro.')
+                            ->options([
+                                5 => '5 - Excelente',
+                                4 => '4 - Muy bueno',
+                                3 => '3 - Bueno',
+                                2 => '2 - Razonable',
+                                1 => '1 - Escaso',
+                            ])
+                            ->required(),
+                        RichEditor::make('review')
+                            ->label('Escribe una reseña')
+                            ->placeholder('Comparte tu opinión sobre el libro...')
+                            ->toolbarButtons(
+                                ['bold', 'italic', 'underline', 'h2', 'h3']
+                            ),
+                    ])
+                    ->action(function ($record, $data) {
+                        $record->update([
+                            'return_requested_at' => now(),
+                            'rating' => $data['rating'],
+                            'review' => $data['review'],
+                        ]);
+                    }),
             ])
             ->emptyStateHeading(
                 function ($livewire) {
@@ -67,6 +112,12 @@ class BookUsersTable
                     };
                 }
             )->emptyStateIcon('heroicon-o-book-open')
+            ->emptyStateActions([
+                Action::make('browse_books')
+                    ->label('Explorar libros')
+                    ->url(BookResource::getUrl())
+                    ->button(),
+            ])
             ->searchPlaceholder('Búsqueda por título o autor');
     }
 }
