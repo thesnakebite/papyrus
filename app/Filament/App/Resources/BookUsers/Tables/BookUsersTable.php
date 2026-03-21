@@ -18,11 +18,6 @@ class BookUsersTable
         return $table
             ->columns([
                 Split::make([
-                    ImageColumn::make('book.image')
-                        ->imageWidth(80)
-                        ->imageHeight('auto')
-                        ->grow(false),
-
                     Stack::make([
                         TextColumn::make('book.title')
                             ->size(TextSize::Large)
@@ -32,7 +27,16 @@ class BookUsersTable
                         TextColumn::make('book.author')
                             ->color('primary')
                             ->searchable(),
+
+                        TextColumn::make('created_at')
+                            ->since()
+                            ->extraAttributes(['class' => 'text-xs text-gray-500']),
                     ])->space(1),
+
+                    ImageColumn::make('book.image')
+                        ->imageWidth(80)
+                        ->imageHeight('auto')
+                        ->grow(false),
                 ]),
             ])->contentGrid([
                 'default' => 1,
