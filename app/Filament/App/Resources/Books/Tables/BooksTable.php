@@ -3,9 +3,11 @@
 namespace App\Filament\App\Resources\Books\Tables;
 
 use App\Enums\Books\BookStatus;
+use App\Filament\App\Resources\BookUsers\BookUserResource;
 use App\Filament\Tables\Columns\RatingColumn;
 use App\Models\BookUser;
 use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
 use Filament\Tables\Columns\ImageColumn;
@@ -81,6 +83,18 @@ class BooksTable
                             ],
                         );
                     })
+                    ->successNotification(
+                        Notification::make()
+                            ->title('Libro solicitado')
+                            ->actions([
+                                Action::make('view_requests')
+                                    ->label('View all requests')
+                                    ->url(BookUserResource::getUrl())
+                                    ->button()
+                                    ->size('xs'),
+                            ])
+                            ->persistent(true)
+                    )
                     ->visible(fn ($record) => ! in_array($record?->currentBorrow?->status, [
                         BookStatus::Requested,
                         BookStatus::Borrowed,

@@ -8,6 +8,7 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
 use Filament\Tables\Columns\ImageColumn;
@@ -63,7 +64,9 @@ class BookUsersTable
                     ->modalDescription('¿Está seguro de que desea cancelar su solicitud de este libro?')
                     ->modalSubmitActionLabel('Si')
                     ->modalCancelActionLabel('No')
-                    ->visible(fn ($record) => $record->status === BookStatus::Requested),
+                    ->visible(fn ($record) => $record->status === BookStatus::Requested)
+                    ->successNotificationTitle('Solicitud cancelada')
+                    ->failureNotificationTitle('No se pudo cancelar la solicitud. Inténtalo de nuevo más tarde.'),
 
                 Action::make('return_book')
                     ->label('Return Book')
@@ -98,7 +101,18 @@ class BookUsersTable
                             'rating' => $data['rating'],
                             'review' => $data['review'],
                         ]);
-                    }),
+                    })
+                    ->successNotification(
+                        Notification::make('return_requested')
+                            ->title('Solicitud realizada con éxito')
+                            ->body('¡Gracias por tus comentarios! Te notificaremos cuando se procese tu devolución.')
+                            ->icon('heroicon-o-check-circle')
+                    )
+                    ->failureNotification(
+                        Notification::make('return_requested')
+                            ->title('No se solicitó la devolución.')
+                            ->body('Inténtelo de nuevo más tarde. O póngase en contacto con el servicio de asistencia si el problema persiste.')
+                    ),
             ])
             ->emptyStateHeading(
                 function ($livewire) {
