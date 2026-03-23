@@ -4,10 +4,10 @@ namespace App\Filament\App\Resources\BookUsers\Tables;
 
 use App\Enums\Books\BookStatus;
 use App\Filament\Admin\Resources\Books\BookResource;
+use App\Filament\Forms\Components\Rating;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
@@ -78,16 +78,18 @@ class BookUsersTable
                     ->modalHeading('¿Te gustó el libro?')
                     ->modalDescription('Sus comentarios nos ayudan a mejorar nuestras recomendaciones.')
                     ->schema([
-                        Select::make('rating')
-                            ->label('Califica el libro.')
-                            ->options([
-                                5 => '5 - Excelente',
-                                4 => '4 - Muy bueno',
-                                3 => '3 - Bueno',
-                                2 => '2 - Razonable',
-                                1 => '1 - Escaso',
-                            ])
+                        Rating::make('rating')
                             ->required(),
+                        // Select::make('rating')
+                        //     ->label('Califica el libro.')
+                        //     ->options([
+                        //         5 => '5 - Excelente',
+                        //         4 => '4 - Muy bueno',
+                        //         3 => '3 - Bueno',
+                        //         2 => '2 - Razonable',
+                        //         1 => '1 - Escaso',
+                        //     ])
+                        //     ->required(),
                         RichEditor::make('review')
                             ->label('Escribe una reseña')
                             ->placeholder('Comparte tu opinión sobre el libro...')
