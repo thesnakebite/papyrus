@@ -11,7 +11,6 @@ use App\Models\BookUser;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -19,7 +18,15 @@ class BookUserResource extends Resource
 {
     protected static ?string $model = BookUser::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $modelLabel = 'Mi Libro';
+
+    protected static ?string $pluralModelLabel = 'Mis Libros';
+
+    protected static ?string $slug = 'mis-libros';
+
+    protected static ?int $navigationSort = 2;
+
+    protected static string|BackedEnum|null $navigationIcon = 'tabler-book-2';
 
     public static function getEloquentQuery(): Builder
     {

@@ -3,7 +3,7 @@
 namespace App\Filament\App\Resources\BookUsers\Tables;
 
 use App\Enums\Books\BookStatus;
-use App\Filament\Admin\Resources\Books\BookResource;
+use App\Filament\App\Resources\Books\BookResource;
 use App\Filament\Forms\Components\Rating;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
