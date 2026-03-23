@@ -18,6 +18,7 @@ abstract class BasePanelProvider extends PanelProvider
             ->font('Source Sans 3')
             ->profile()
             ->viteTheme('resources/css/filament/theme.css')
-            ->globalSearch(false);
+            ->globalSearch(false)
+            ->spa();
     }
 }

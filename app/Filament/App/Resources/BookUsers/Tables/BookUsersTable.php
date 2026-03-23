@@ -64,6 +64,7 @@ class BookUsersTable
                     ->modalDescription('¿Está seguro de que desea cancelar su solicitud de este libro?')
                     ->modalSubmitActionLabel('Si')
                     ->modalCancelActionLabel('No')
+                    ->after(fn ($livewire) => $livewire->dispatch('refresh-sidebar'))
                     ->visible(fn ($record) => $record->status === BookStatus::Requested)
                     ->successNotificationTitle('Solicitud cancelada')
                     ->failureNotificationTitle('No se pudo cancelar la solicitud. Inténtalo de nuevo más tarde.'),

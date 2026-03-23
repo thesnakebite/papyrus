@@ -83,6 +83,7 @@ class BooksTable
                             ],
                         );
                     })
+                    ->after(fn ($livewire) => $livewire->dispatch('refresh-sidebar'))
                     ->successNotification(
                         Notification::make()
                             ->title('Libro solicitado')

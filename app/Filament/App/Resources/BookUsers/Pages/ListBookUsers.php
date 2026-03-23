@@ -17,19 +17,19 @@ class ListBookUsers extends ListRecords
         return [
             BookStatus::Requested->value => Tab::make('Solicitados')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', BookStatus::Requested))
-                ->icon('heroicon-o-clock')
+                ->icon('tabler-clock-plus')
                 ->badge(
                     fn () => auth()->user()->books()->where('status', BookStatus::Requested)->count()
                 ),
             BookStatus::Borrowed->value => Tab::make('Prestados')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', BookStatus::Borrowed))
-                ->icon('heroicon-o-book-open')
+                ->icon('tabler-book')
                 ->badge(
                     fn () => auth()->user()->books()->where('status', BookStatus::Borrowed)->count()
                 ),
             BookStatus::Returned->value => Tab::make('Devueltos')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', BookStatus::Returned))
-                ->icon('heroicon-o-check')
+                ->icon('tabler-book-2')
                 ->badge(
                     fn () => auth()->user()->books()->where('status', BookStatus::Returned)->count()
                 ),
