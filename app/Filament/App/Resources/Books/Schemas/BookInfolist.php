@@ -2,11 +2,19 @@
 
 namespace App\Filament\App\Resources\Books\Schemas;
 
+use App\Enums\Books\BookStatus;
+use App\Filament\App\Resources\BookUsers\BookUserResource;
+use App\Filament\Infolists\Components\Rating;
+use App\Models\BookUser;
+use Filament\Actions\Action;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 
 class BookInfolist
 {
@@ -45,12 +53,46 @@ class BookInfolist
                                     ->extraAttributes([
                                         'class' => 'text-base',
                                     ]),
-                                TextEntry::make('average_rating')
+                                Rating::make('average_rating')
                                     ->label('Clasificación')
                                     ->placeholder('Sin calificación'),
                                 TextEntry::make('borrowed_count')
                                     ->label('Prestado')
                                     ->state(fn ($record) => $record->users()->count().' veces'),
+                                Actions::make([
+                                    Action::make('request')
+                                        ->label('Solicitar libro')
+                                        ->button()
+                                        ->icon('heroicon-o-clock')
+                                        ->action(function ($record) {
+                                            BookUser::updateOrCreate(
+                                                [
+                                                    'user_id' => Auth::id(),
+                                                    'book_id' => $record->id,
+                                                ],
+                                                [
+                                                    'status' => BookStatus::Requested,
+                                                    'requested_at' => now(),
+                                                ],
+                                            );
+                                        })
+                                        ->successNotification(
+                                            Notification::make()
+                                                ->title('Libro solicitado')
+                                                ->actions([
+                                                    Action::make('view_requests')
+                                                        ->label('View all requests')
+                                                        ->url(BookUserResource::getUrl())
+                                                        ->button()
+                                                        ->size('xs'),
+                                                ])
+                                                ->persistent(true)
+                                        )
+                                        ->visible(fn ($record) => ! in_array($record?->currentBorrow?->status, [
+                                            BookStatus::Requested,
+                                            BookStatus::Borrowed,
+                                        ])),
+                                ]),
                             ]),
 
                         ImageEntry::make('image')
