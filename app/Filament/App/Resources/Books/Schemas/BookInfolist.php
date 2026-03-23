@@ -8,12 +8,16 @@ use App\Filament\Infolists\Components\Rating;
 use App\Models\BookUser;
 use Filament\Actions\Action;
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\EmptyState;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 
 class BookInfolist
@@ -103,6 +107,30 @@ class BookInfolist
                             ->extraImgAttributes([
                                 'class' => 'rounded-lg shadow-md',
                             ]),
+                        Text::make('Reseñas de usuarios')
+                            ->extraAttributes([
+                                'class' => 'text-base font-semibold col-span-full',
+                            ]),
+                        RepeatableEntry::make('reviews')
+                            ->hiddenLabel()
+                            ->state(fn ($record) => $record->reviews()->latest()->take(4)->get())
+                            ->schema([
+                                TextEntry::make('review')
+                                    ->hiddenLabel()
+                                    ->html(),
+                                TextEntry::make('user.name')
+                                    ->hiddenLabel()
+                                    ->extraAttributes([
+                                        'class' => 'italic text-sm text-primary-600',
+                                    ]),
+                            ])
+                            ->columnSpanFull(),
+                        EmptyState::make('Sin reseñas todavía')
+                            ->description('Este libro aún no tiene reseñas de lectores.')
+                            ->icon(Heroicon::OutlinedChatBubbleLeftEllipsis)
+                            ->columnSpanFull()
+                            ->visible(fn ($record) => ! $record->reviews()->exists()),
+
                     ])
                     ->dense(),
             ]);
