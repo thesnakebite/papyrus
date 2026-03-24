@@ -3,6 +3,85 @@
 @source '../../../app/Filament/**/*';
 @source '../../../resources/views/filament/**/*';
 
+@theme {
+    --radius-lg: 0.2rem;
+    --radius-xl: 0.3rem;
+}
+
 .fi-input[type="search"] {
     min-width: 12rem;
+}
+
+.fi-layout {
+    @apply bg-white dark:bg-gray-950;
+}
+
+.fi-sidebar {
+    @apply bg-white dark:bg-slate-900;
+}
+
+.fi-main-ctn {
+    @apply bg-slate-100 dark:bg-slate-900;
+}
+
+.fi-sidebar-header {
+    @apply flex-row-reverse;
+}
+
+.fi-sidebar-close-collapse-sidebar-btn,
+.fi-sidebar-open-collapse-sidebar-btn {
+    @apply bg-slate-200 dark:bg-primary-900/40 dark:hover:bg-primary-800/50 size-7;
+}
+
+.fi-sidebar-close-collapse-sidebar-btn svg,
+.fi-sidebar-open-collapse-sidebar-btn svg {
+    @apply size-4 dark:text-slate-300;
+}
+
+.fi-sidebar-close-collapse-sidebar-btn {
+    @apply hidden;
+}
+
+.fi-sidebar:hover .fi-sidebar-close-collapse-sidebar-btn {
+    @apply inline-flex;
+}
+
+.fi-sidebar-item-icon {
+    stroke-width: 1.25;
+}
+
+.fi-ta-ctn {
+    @apply bg-transparent;
+    box-shadow: none;
+
+    & .fi-ta-header-toolbar {
+        @apply border-none;
+    }
+
+    & .fi-pagination {
+        @apply border-none;
+    }
+}
+
+.fi-ta-content, .fi-ta-header-toolbar, .fi-pagination {
+    @apply px-0.5;
+}
+
+.fi-ta-split {
+    @apply items-start;
+}
+
+.fi-ta-image img {
+    @apply rounded-sm;
+}
+
+.fi-tabs-item {
+    &.fi-active {
+        @apply bg-primary-400 dark:bg-primary-500;
+    }
+
+    &.fi-active .fi-tabs-item-label,
+    &.fi-active .fi-badge svg {
+        @apply text-white;
+    }
 }
