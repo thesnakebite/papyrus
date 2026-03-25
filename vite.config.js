@@ -9,7 +9,8 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/css/filament/theme.css',
-                'resources/css/filament/login.css'
+                'resources/css/filament/login.css',
+                'resources/css/filament/register.css'
             ],
             refresh: true,
         }),
