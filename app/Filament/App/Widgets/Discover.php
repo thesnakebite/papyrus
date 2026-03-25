@@ -11,7 +11,7 @@ class Discover extends Widget
 
     protected int|string|array $columnSpan = [
         'default' => 1,
-        'md' => 6,
+        'md' => 2,
     ];
 
     protected string $view = 'filament.app.widgets.discover';

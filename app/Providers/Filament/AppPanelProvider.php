@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Enums\Books\BookStatus;
+use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Resources\Books\BookResource;
 use App\Filament\App\Resources\BookUsers\BookUserResource;
 use Filament\Http\Middleware\Authenticate;
@@ -12,7 +13,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
 use Filament\Navigation\NavigationItem;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\Support\Colors\Color;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;

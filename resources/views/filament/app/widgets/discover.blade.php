@@ -1,6 +1,6 @@
 @use('App\Filament\App\Resources\Books\BookResource')
 <x-filament-widgets::widget>
-    <x-filament::section class="h-full">
+    <x-filament::section class="h-full dark:bg-slate-800">
         <h3 class="text-lg font-semibold">Libro del mes</h3>
         <div class="mt-3 flex gap-3 items-center">
             <div class="shrink-0 w-16">
